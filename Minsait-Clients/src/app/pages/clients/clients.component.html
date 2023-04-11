@@ -1,0 +1,44 @@
+<div class="mb-2 mt-2 ms-5">
+  <h1 class="display-6">Clients</h1>
+</div>
+<hr />
+
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">CPF</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Monthly Income</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td scope="row">{{ client.nome }}</td>
+        <td>{{ client.cpf }}</td>
+        <td>{{ client.telefone }}</td>
+        <td>{{ client.rendimentoMensal | currency : "BRL" }}</td>
+        <td>
+          <a
+            [routerLink]="['/clientes/edit/', client.cpf]"
+            class="btn btn-primary"
+          >
+            <i class="fa fa-pencil" title="Edit"></i
+          ></a>
+          <button
+            class="btn btn-danger mx-2"
+            (click)="confirmDelete(client.cpf)"
+          >
+            <i class="fa fa-trash" title="Delete"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div class="ms-5">
+    <a routerLink="/clientes/new" class="btn btn-dark">New client</a>
+  </div>
+</div>
