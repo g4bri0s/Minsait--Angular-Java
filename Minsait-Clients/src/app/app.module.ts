@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ClientsComponent } from './pages/clients/clients.component';
-import { HomeComponent } from './pages/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EditClientComponent } from './pages/edit-client/edit-client.component';
 import { RegisterClientComponent } from './pages/register-client/register-client.component';
@@ -16,7 +15,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     NavbarComponent,
     ClientsComponent,
-    HomeComponent,
     EditClientComponent,
     RegisterClientComponent,
   ],

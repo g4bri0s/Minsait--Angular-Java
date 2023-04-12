@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IClient } from 'src/app/interfaces/client';
+import { IClient, IClientAddress } from 'src/app/interfaces/client';
 import { ClientsService } from 'src/app/services/clients.service';
 import Swal from 'sweetalert2';
 
@@ -22,23 +22,24 @@ export class EditClientComponent {
     cpf: new FormControl({}, Validators.required),
     telefone: new FormControl({}, Validators.required),
     rendimentoMensal: new FormControl({}, Validators.required),
-    endereco: new FormGroup({
-      rua: new FormControl('', Validators.required),
-      cep: new FormControl({}, Validators.required),
-      numero: new FormControl({}, Validators.required),
-    }),
+    rua: new FormControl('', Validators.required),
+    cep: new FormControl({}, Validators.required),
+    numero: new FormControl({}, Validators.required),
   });
 
   ngOnInit() {
     const cpf = Number(this.route.snapshot.paramMap.get('cpf'));
     if (cpf) {
       this.clientService.getClintByCpf(cpf).subscribe((client: IClient) => {
+        console.log(client);
         this.editClientForm.setValue({
           nome: client.nome,
           cpf: client.cpf,
           telefone: client.telefone,
           rendimentoMensal: client.rendimentoMensal,
-          endereco: client.endereco,
+          rua: client.endereco.rua,
+          cep: client.endereco.cep,
+          numero: client.endereco.numero,
         });
       });
     } else {
@@ -53,8 +54,19 @@ export class EditClientComponent {
 
   edit() {
     const cpf = Number(this.route.snapshot.paramMap.get('cpf'));
-    const client: IClient = this.editClientForm.value as IClient;
-    this.clientService.editClient(cpf, client).subscribe(
+    const client: IClientAddress = this.editClientForm.value as IClientAddress;
+    const saveClient: IClient = {
+      nome: client.nome,
+      cpf: client.cpf,
+      telefone: client.telefone,
+      rendimentoMensal: client.rendimentoMensal,
+      endereco: {
+        rua: client.rua,
+        cep: client.cep,
+        numero: client.numero,
+      },
+    };
+    this.clientService.editClient(cpf, saveClient).subscribe(
       (result) => {
         Swal.fire({
           icon: 'success',

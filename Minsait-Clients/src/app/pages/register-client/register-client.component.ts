@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IClient } from 'src/app/interfaces/client';
+import { IClient, IClientAddress } from 'src/app/interfaces/client';
 import { ClientsService } from 'src/app/services/clients.service';
 import Swal from 'sweetalert2';
 
@@ -18,17 +18,26 @@ export class RegisterClientComponent {
     cpf: new FormControl({}, Validators.required),
     telefone: new FormControl({}, Validators.required),
     rendimentoMensal: new FormControl({}, Validators.required),
-  });
-
-  enderecoData = new FormGroup({
     rua: new FormControl('', Validators.required),
     cep: new FormControl({}, Validators.required),
     numero: new FormControl({}, Validators.required),
   });
 
   register() {
-    const client: IClient = this.registerClientForm.value as IClient;
-    this.clientService.registerClient(client).subscribe(
+    const client: IClientAddress = this.registerClientForm
+      .value as IClientAddress;
+    const saveClient: IClient = {
+      nome: client.nome,
+      cpf: client.cpf,
+      telefone: client.telefone,
+      rendimentoMensal: client.rendimentoMensal,
+      endereco: {
+        rua: client.rua,
+        cep: client.cep,
+        numero: client.numero,
+      },
+    };
+    this.clientService.registerClient(saveClient).subscribe(
       (result) => {
         Swal.fire({
           icon: 'success',

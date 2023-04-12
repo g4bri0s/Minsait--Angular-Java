@@ -1,11 +1,14 @@
-export interface IClient {
+import { IAddress } from './address';
+
+export interface IClientForm {
   nome: string;
   cpf: number;
-  endereco: {
-    rua: string;
-    numero: number;
-    cep: number;
-  };
   telefone: number;
   rendimentoMensal: number;
+}
+
+export interface IClientAddress extends IClientForm, IAddress {}
+
+export interface IClient extends IClientForm {
+  endereco: IAddress;
 }
