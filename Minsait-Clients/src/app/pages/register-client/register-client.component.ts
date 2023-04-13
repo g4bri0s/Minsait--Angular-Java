@@ -37,24 +37,34 @@ export class RegisterClientComponent {
         numero: client.numero,
       },
     };
-    this.clientService.registerClient(saveClient).subscribe(
-      (result) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Client saved',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      },
-      (error) => {
+
+    this.clientService.existClintByCpf(saveClient.cpf).subscribe((exists) => {
+      if (exists) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: '<a href="">Why do I have this issue?</a>',
+          text: 'Client arredy exist!',
         });
+      } else {
+        this.clientService.registerClient(saveClient).subscribe(
+          (result) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Client saved',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Unexpected erro',
+            });
+          }
+        );
       }
-    );
+    });
   }
 
   refreshPagAfterButton(redirectedPage: string) {
